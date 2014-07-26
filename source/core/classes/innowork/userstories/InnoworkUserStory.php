@@ -2,36 +2,28 @@
 
 require_once('innowork/core/InnoworkItem.php');
 
-class InnoworkBug extends InnoworkItem
+class InnoworkUserStory extends InnoworkItem
 {
-    public $mTable = 'innowork_bugs';
+    public $mTable = 'innowork_userstories';
     public $mNewDispatcher = 'view';
-    public $mNewEvent = 'newbug';
+    public $mNewEvent = 'newuserstory';
     public $mNoTrash = false;
     public $mConvertible = true;
     public $mTypeTags = array('task');
     public $mParentType = 'project';
     public $mParentIdField = 'projectid';
-    const ITEM_TYPE = 'bug';
+    const ITEM_TYPE = 'userstory';
 
-    //var $mNoAcl = true;
-    //var $mNoLog = true;
-    //var $_mCreationAcl = InnoworkAcl::TYPE_PRIVATE;
-
-    public function __construct($rrootDb, $rdomainDA, $mailId = 0)
+    public function __construct($rrootDb, $rdomainDA, $storyId = 0)
     {
-        parent::__construct($rrootDb, $rdomainDA, InnoworkBug::ITEM_TYPE, $mailId);
+        parent::__construct($rrootDb, $rdomainDA, InnoworkUserStory::ITEM_TYPE, $storyId);
 
         $this->mKeys['title'] = 'text';
         $this->mKeys['description'] = 'text';
-        $this->mKeys['steps'] = 'text';
-        $this->mKeys['solution'] = 'text';
+        $this->mKeys['accepcriteria'] = 'text';
         $this->mKeys['projectid'] = 'table:innowork_projects:name:integer';
-        $this->mKeys['statusid'] = 'table:innowork_bugs_fields_values:fieldvalue:integer';
-        $this->mKeys['priorityid'] = 'table:innowork_bugs_fields_values:fieldvalue:integer';
-        $this->mKeys['sourceid'] = 'table:innowork_bugs_fields_values:fieldvalue:integer';
-        $this->mKeys['resolutionid'] = 'table:innowork_bugs_fields_values:fieldvalue:integer';
-        $this->mKeys['severityid'] = 'table:innowork_bugs_fields_values:fieldvalue:integer';
+        $this->mKeys['statusid'] = 'table:innowork_userstories_fields_values:fieldvalue:integer';
+        $this->mKeys['priorityid'] = 'table:innowork_userstories_fields_values:fieldvalue:integer';
         $this->mKeys['creationdate'] = 'timestamp';
         $this->mKeys['done'] = 'boolean';
         $this->mKeys['openedby'] = 'userid';
@@ -39,11 +31,8 @@ class InnoworkBug extends InnoworkItem
 
         $this->mSearchResultKeys[] = 'title';
         $this->mSearchResultKeys[] = 'projectid';
-        $this->mSearchResultKeys[] = 'severityid';
         $this->mSearchResultKeys[] = 'statusid';
         $this->mSearchResultKeys[] = 'priorityid';
-        $this->mSearchResultKeys[] = 'sourceid';
-        $this->mSearchResultKeys[] = 'resolutionid';
         $this->mSearchResultKeys[] = 'creationdate';
         $this->mSearchResultKeys[] = 'done';
         $this->mSearchResultKeys[] = 'openedby';
@@ -52,18 +41,15 @@ class InnoworkBug extends InnoworkItem
         $this->mViewableSearchResultKeys[] = 'id';
         $this->mViewableSearchResultKeys[] = 'title';
         $this->mViewableSearchResultKeys[] = 'projectid';
-        $this->mViewableSearchResultKeys[] = 'severityid';
         $this->mViewableSearchResultKeys[] = 'statusid';
         $this->mViewableSearchResultKeys[] = 'priorityid';
-        $this->mViewableSearchResultKeys[] = 'sourceid';
-        $this->mViewableSearchResultKeys[] = 'resolutionid';
         $this->mViewableSearchResultKeys[] = 'creationdate';
         $this->mViewableSearchResultKeys[] = 'openedby';
         $this->mViewableSearchResultKeys[] = 'assignedto';
 
         $this->mSearchOrderBy = 'id DESC';
         $this->mShowDispatcher = 'view';
-        $this->mShowEvent = 'showbug';
+        $this->mShowEvent = 'showuserstory';
 
         $this->mGenericFields['projectid'] = 'projectid';
         $this->mGenericFields['title'] = 'title';
@@ -96,20 +82,6 @@ class InnoworkBug extends InnoworkItem
                 or !strlen( $params['priorityid'] )
                 ) $params['priorityid'] = '0';
 
-            if (
-                !isset($params['sourceid'] )
-                or !strlen( $params['sourceid'] )
-                ) $params['sourceid'] = '0';
-
-            if (
-                !isset($params['resolutionid'] )
-                or !strlen( $params['resolutionid'] )
-                ) $params['resolutionid'] = '0';
-
-            if (!isset($params['severityid']) or !strlen($params['severityid'])) {
-            	$params['severityid'] = '0';
-            }
-
             if (!isset($params['openedby']) or !strlen($params['openedby'])) {
             	$params['openedby'] = '0';
             }
@@ -140,8 +112,7 @@ class InnoworkBug extends InnoworkItem
                 switch ( $key ) {
                 case 'title':
                 case 'description':
-                case 'steps':
-                case 'solution':
+                case 'accepcriteria':
                 case 'done':
                 case 'trashed':
                     $keys .= $key_pre.$key;
@@ -159,9 +130,6 @@ class InnoworkBug extends InnoworkItem
                 case 'projectid':
                 case 'statusid':
                 case 'priorityid':
-                case 'sourceid':
-                case 'resolutionid':
-                case 'severityid':
                 case 'openedby':
                 case 'assignedto':
                     if ( !strlen( $key ) ) $key = 0;
@@ -212,8 +180,7 @@ class InnoworkBug extends InnoworkItem
                         switch ( $field ) {
                         case 'title':
                         case 'description':
-                        case 'steps':
-                        case 'solution':
+                        case 'accepcriteria':
                         case 'done':
                         case 'trashed':
                             if ( !$start ) $update_str .= ',';
@@ -233,9 +200,6 @@ class InnoworkBug extends InnoworkItem
                         case 'projectid':
                         case 'statusid':
                         case 'priorityid':
-                        case 'sourceid':
-                        case 'resolutionid':
-                        case 'severityid':
                 		case 'openedby':
                 		case 'assignedto':
                         	if ( !strlen( $value ) ) $value = 0;
@@ -278,111 +242,6 @@ class InnoworkBug extends InnoworkItem
             'WHERE id='.$this->mItemId
             );
 
-        if ( $result ) {
-            $this->mrDomainDA->Execute(
-                'DELETE FROM innowork_bugs_messages '.
-                'WHERE bugid='.$this->mItemId
-                );
-        }
-
-        return $result;
-    }
-
-    public function AddMessage(
-        $username,
-        $content
-        )
-    {
-        $result = false;
-
-        if ( $this->mItemId ) {
-            $date['year'] = date( 'Y' );
-            $date['mon'] = date( 'n' );
-            $date['mday'] = date( 'd' );
-            $date['hours'] = date( 'H' );
-            $date['minutes'] = date( 'i' );
-            $date['seconds'] = date( 's' );
-
-            $timestamp = $this->mrDomainDA->getTimestampFromDateArray( $date );
-
-            if ( strlen( $username ) ) {
-                $result = $this->mrDomainDA->Execute(
-                    'INSERT INTO innowork_bugs_messages VALUES('.
-                    \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getCurrentDomain()->getDataAccess()->getNextSequenceValue( 'innowork_bugs_messages_id_seq' ).','.
-                    $this->mItemId.','.
-                    \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getCurrentDomain()->getDataAccess()->formatText( $username ).','.
-                    \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getCurrentDomain()->getDataAccess()->formatText( $content ).','.
-                    \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getCurrentDomain()->getDataAccess()->formatText( $timestamp ).')'
-                    );
-
-                if ( $result ) {
-                    require_once('innowork/core/InnoworkItemLog.php');
-                    $log = new InnoworkItemLog(
-                        $this->mItemType,
-                        $this->mItemId
-                        );
-
-                    $log->LogChange( \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getCurrentUser()->getUserName() );
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    public function RemoveMessage(
-        $messageId
-        )
-    {
-        $result = false;
-        $messageId = (int)$messageId;
-
-        if ( $messageId ) {
-            $result = $this->mrDomainDA->Execute(
-                'DELETE FROM innowork_bugs_messages '.
-                'WHERE id='.$messageId
-                );
-
-                if ( $result ) {
-                    require_once('innowork/core/InnoworkItemLog.php');
-                    $log = new InnoworkItemLog(
-                        $this->mItemType,
-                        $this->mItemId
-                        );
-
-                    $log->LogChange( \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getCurrentUser()->getUserName() );
-                }
-        }
-
-        return $result;
-    }
-
-    public function getMessages()
-    {
-        $result = array();
-
-        if ( $this->mItemId ) {
-            $messages_query = \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getCurrentDomain()->getDataAccess()->Execute(
-                'SELECT id,username,content,creationdate '.
-                'FROM innowork_bugs_messages '.
-                'WHERE bugid='.$this->mItemId.' '.
-                'ORDER BY creationdate'
-                );
-
-            while ( !$messages_query->eof ) {
-                $result[] = array(
-                    'id' => $messages_query->getFields( 'id' ),
-                    'username' => $messages_query->getFields( 'username' ),
-                    'content' => $messages_query->getFields( 'content' ),
-                    'creationdate' => \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getCurrentDomain()->getDataAccess()->getDateArrayFromTimestamp(
-                        $messages_query->getFields( 'creationdate' )
-                        )
-                    );
-
-                $messages_query->moveNext();
-            }
-        }
-
         return $result;
     }
 
@@ -390,11 +249,11 @@ class InnoworkBug extends InnoworkItem
     {
         $result = false;
 
-        $bugs = new InnoworkBug(
+        $userstories = new InnoworkUserStory(
             \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess(),
             \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getCurrentDomain()->getDataAccess()
             );
-        $bugs_search = $bugs->Search(
+        $userstories_search = $userstories->Search(
             array(
                 'done' => \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getCurrentDomain()->getDataAccess()->fmtfalse
                 ),
@@ -409,17 +268,17 @@ class InnoworkBug extends InnoworkItem
 '<vertgroup>
   <children>';
 
-        foreach ( $bugs_search as $bug ) {
+        foreach ( $userstories_search as $story ) {
             $result .=
 '<link>
   <args>
-    <label type="encoded">'.urlencode( '- '.$bug['id'] ).'</label>
+    <label type="encoded">'.urlencode( '- '.$story['id'] ).'</label>
     <link type="encoded">'.urlencode(
-        WuiEventsCall::buildEventsCallString( 'innoworkbugs', array(
+        WuiEventsCall::buildEventsCallString( 'innoworkuserstories', array(
                 array(
                     'view',
-                    'showbug',
-                    array( 'id' => $bug['id'] )
+                    'showuserstory',
+                    array( 'id' => $story['id'] )
                 )
             ) )
         ).'</link>

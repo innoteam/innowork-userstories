@@ -4,11 +4,11 @@ use \Innomatic\Core\InnomaticContainer;
 use \Innomatic\Wui\Widgets;
 use \Shared\Wui;
 
-require_once('innowork/bugs/InnoworkBug.php');
-require_once('innowork/bugs/InnoworkBugField.php');
+require_once('innowork/userstories/InnoworkUserStory.php');
+require_once('innowork/userstories/InnoworkUserStoryField.php');
 require_once('innowork/projects/InnoworkProject.php');
 
-class InnoworkbugsprefsPanelViews extends \Innomatic\Desktop\Panel\PanelViews
+class InnoworkuserstoriesprefsPanelViews extends \Innomatic\Desktop\Panel\PanelViews
 {
     public $pageTitle;
     public $toolbars;
@@ -29,7 +29,7 @@ class InnoworkbugsprefsPanelViews extends \Innomatic\Desktop\Panel\PanelViews
     public function beginHelper()
     {
         $this->localeCatalog = new LocaleCatalog(
-            'innowork-bugs::innoworkbugs_domain_prefs',
+            'innowork-userstories::domain_prefs',
             \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getCurrentUser()->getLanguage()
        );
 
@@ -37,14 +37,14 @@ class InnoworkbugsprefsPanelViews extends \Innomatic\Desktop\Panel\PanelViews
             \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess(),
             \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getCurrentDomain()->getDataAccess()
        );
-        
+
 $this->pageTitle = $this->localeCatalog->getStr('preferences.title');
 $this->toolbars['prefs'] = array(
     'prefs' => array(
         'label' => $this->localeCatalog->getStr('preferences.toolbar'),
         'themeimage' => 'settings1',
         'horiz' => 'true',
-        'action' => \Innomatic\Wui\Dispatch\WuiEventsCall::buildEventsCallString('innoworkbugsprefs', array( array(
+        'action' => \Innomatic\Wui\Dispatch\WuiEventsCall::buildEventsCallString('innoworkuserstoriesprefs', array( array(
             'view',
             'default',
             '' ) ) )
@@ -53,7 +53,7 @@ $this->toolbars['prefs'] = array(
         'label' => $this->localeCatalog->getStr('newfield.toolbar'),
         'themeimage' => 'filenew',
         'horiz' => 'true',
-        'action' => \Innomatic\Wui\Dispatch\WuiEventsCall::buildEventsCallString('innoworkbugsprefs', array( array(
+        'action' => \Innomatic\Wui\Dispatch\WuiEventsCall::buildEventsCallString('innoworkuserstoriesprefs', array( array(
             'view',
             'newfield',
             '' ) ) )
@@ -89,23 +89,20 @@ $this->toolbars['prefs'] = array(
     {
         $tabs[0]['label'] = $this->localeCatalog->getStr('status.tab');
         $tabs[1]['label'] = $this->localeCatalog->getStr('priority.tab');
-        $tabs[2]['label'] = $this->localeCatalog->getStr('type.tab');
-        $tabs[3]['label'] = $this->localeCatalog->getStr('source.tab');
-        $tabs[4]['label'] = $this->localeCatalog->getStr('resolution.tab');
-    
+
         $headers[0]['label'] = $this->localeCatalog->getStr('fieldvalue.header');
-    
+
         $this->xml =
         '<vertgroup><name>settings</name>
   <children>
-    
+
     <label><name>fields</name>
       <args>
         <bold>true</bold>
         <label type="encoded">'.urlencode($this->localeCatalog->getStr('fieldvalues.label')).'</label>
       </args>
     </label>
-    
+
     <tab><name>fieldsvalues</name>
       <args>
         <tabs type="array">'.WuiXml::encode($tabs).'</tabs>
@@ -113,16 +110,16 @@ $this->toolbars['prefs'] = array(
         <activetab>'.(isset($eventData['tab']) ? $eventData['tab'] : '').'</activetab>
       </args>
       <children>';
-    
+
         $this->xml .=
         '        <table><name>types</name>
           <args>
             <headers type="array">'.WuiXml::encode($headers).'</headers>
           </args>
           <children>';
-    
+
         $row = 0;
-        $statuses = InnoworkBugField::getFields(InnoworkBugField::TYPE_STATUS);
+        $statuses = InnoworkUserStoryField::getFields(InnoworkUserStoryField::TYPE_STATUS);
         while (list($id, $field) = each($statuses))
         {
             $this->xml .=
@@ -164,28 +161,28 @@ $this->toolbars['prefs'] = array(
                                                 'removefield',
                                                 array(
                                                         'id' => $id,
-                                                        'fieldtype' => InnoworkBugField::TYPE_STATUS
+                                                        'fieldtype' => InnoworkUserStoryField::TYPE_STATUS
                                                ))))
            )))).'</toolbars>
   </args>
 </innomatictoolbar>';
-    
+
             $row++;
         }
-    
+
         $this->xml .=
         '          </children>
         </table>';
-    
+
         $this->xml .=
         '        <table><name>types</name>
           <args>
             <headers type="array">'.WuiXml::encode($headers).'</headers>
           </args>
           <children>';
-    
+
         $row = 0;
-        $priorities = InnoworkBugField::getFields(InnoworkBugField::TYPE_PRIORITY);
+        $priorities = InnoworkUserStoryField::getFields(InnoworkUserStoryField::TYPE_PRIORITY);
         while (list($id, $field) = each($priorities))
         {
             $this->xml .=
@@ -227,28 +224,28 @@ $this->toolbars['prefs'] = array(
                                                 'removefield',
                                                 array(
                                                         'id' => $id,
-                                                        'fieldtype' => InnoworkBugField::TYPE_PRIORITY
+                                                        'fieldtype' => InnoworkUserStoryField::TYPE_PRIORITY
                                                ))))
            )))).'</toolbars>
   </args>
 </innomatictoolbar>';
-    
+
             $row++;
         }
-    
+
         $this->xml .=
         '          </children>
         </table>';
-    
+
         $this->xml .=
         '        <table><name>types</name>
           <args>
             <headers type="array">'.WuiXml::encode($headers).'</headers>
           </args>
           <children>';
-    
+
         $row = 0;
-        $types = InnoworkBugField::getFields(InnoworkBugField::TYPE_SEVERITY);
+        $types = InnoworkUserStoryField::getFields(InnoworkUserStoryField::TYPE_SEVERITY);
         while (list($id, $field) = each($types))
         {
             $this->xml .=
@@ -290,28 +287,28 @@ $this->toolbars['prefs'] = array(
                                                 'removefield',
                                                 array(
                                                         'id' => $id,
-                                                        'fieldtype' => InnoworkBugField::TYPE_SEVERITY
+                                                        'fieldtype' => InnoworkUserStoryField::TYPE_SEVERITY
                                                ))))
            )))).'</toolbars>
   </args>
 </innomatictoolbar>';
-    
+
             $row++;
         }
-    
+
         $this->xml .=
         '          </children>
         </table>';
-    
+
         $this->xml .=
         '        <table><name>sources</name>
           <args>
             <headers type="array">'.WuiXml::encode($headers).'</headers>
           </args>
           <children>';
-    
+
         $row = 0;
-        $sources = InnoworkBugField::getFields(InnoworkBugField::TYPE_SOURCE);
+        $sources = InnoworkUserStoryField::getFields(InnoworkUserStoryField::TYPE_SOURCE);
         while (list($id, $field) = each($sources)) {
             $this->xml .=
             '<label row="'.$row.'" col="0"><name>source</name>
@@ -352,28 +349,28 @@ $this->toolbars['prefs'] = array(
                                                 'removefield',
                                                 array(
                                                         'id' => $id,
-                                                        'fieldtype' => InnoworkBugField::TYPE_SOURCE
+                                                        'fieldtype' => InnoworkUserStoryField::TYPE_SOURCE
                                                ))))
            )))).'</toolbars>
   </args>
 </innomatictoolbar>';
-    
+
             $row++;
         }
-    
+
         $this->xml .=
         '          </children>
         </table>';
-    
+
         $this->xml .=
         '        <table><name>resolutions</name>
           <args>
             <headers type="array">'.WuiXml::encode($headers).'</headers>
           </args>
           <children>';
-    
+
         $row = 0;
-        $sources = InnoworkBugField::getFields(InnoworkBugField::TYPE_RESOLUTION);
+        $sources = InnoworkUserStoryField::getFields(InnoworkUserStoryField::TYPE_RESOLUTION);
         while (list($id, $field) = each($sources))
         {
             $this->xml .=
@@ -415,38 +412,35 @@ $this->toolbars['prefs'] = array(
                                                 'removefield',
                                                 array(
                                                         'id' => $id,
-                                                        'fieldtype' => InnoworkBugField::TYPE_RESOLUTION
+                                                        'fieldtype' => InnoworkUserStoryField::TYPE_RESOLUTION
                                                ))))
            )))).'</toolbars>
   </args>
 </innomatictoolbar>';
-    
+
             $row++;
         }
-    
+
         $this->xml .=
         '          </children>
         </table>';
-    
+
         $this->xml .=
         '      </children>
     </tab>
   </children>
 </vertgroup>';
     }
-    
+
     public function viewnewfield($eventData)
     {
-        $field_types[InnoworkBugField::TYPE_STATUS] = $this->localeCatalog->getStr('field_status.label');
-        $field_types[InnoworkBugField::TYPE_PRIORITY] = $this->localeCatalog->getStr('field_priority.label');
-        $field_types[InnoworkBugField::TYPE_SEVERITY] = $this->localeCatalog->getStr('field_type.label');
-        $field_types[InnoworkBugField::TYPE_SOURCE] = $this->localeCatalog->getStr('field_source.label');
-        $field_types[InnoworkBugField::TYPE_RESOLUTION] = $this->localeCatalog->getStr('field_resolution.label');
-    
+        $field_types[InnoworkUserStoryField::TYPE_STATUS] = $this->localeCatalog->getStr('field_status.label');
+        $field_types[InnoworkUserStoryField::TYPE_PRIORITY] = $this->localeCatalog->getStr('field_priority.label');
+
         $this->xml .=
         '<vertgroup><name>newfield</name>
   <children>
-    
+
     <table><name>field</name>
       <args>
         <headers type="array">'.WuiXml::encode(
@@ -455,7 +449,7 @@ $this->toolbars['prefs'] = array(
                    ))).'</headers>
       </args>
       <children>
-    
+
     <form row="0" col="0"><name>field</name>
       <args>
         <method>post</method>
@@ -472,42 +466,42 @@ $this->toolbars['prefs'] = array(
            ))).'</action>
       </args>
       <children>
-    
+
             <grid><name>field</name>
               <children>
-    
+
                 <label row="0" col="0"><name>type</name>
                   <args>
                     <label type="encoded">'.urlencode($this->localeCatalog->getStr('fieldtype.label')).'</label>
                   </args>
                 </label>
-    
+
                 <combobox row="0" col="1"><name>fieldtype</name>
                   <args>
                     <disp>action</disp>
                     <elements type="array">'.WuiXml::encode($field_types).'</elements>
                   </args>
                 </combobox>
-    
+
                 <label row="1" col="0"><name>value</name>
                   <args>
                     <label type="encoded">'.urlencode($this->localeCatalog->getStr('fieldvalue.label')).'</label>
                   </args>
                 </label>
-    
+
                 <string row="1" col="1"><name>value</name>
                   <args>
                     <disp>action</disp>
                     <size>30</size>
                   </args>
                 </string>
-    
+
               </children>
             </grid>
-    
+
           </children>
         </form>
-    
+
             <button row="1" col="0"><name>apply</name>
               <args>
                 <themeimage>buttonok</themeimage>
@@ -528,31 +522,28 @@ $this->toolbars['prefs'] = array(
                 <formsubmit>field</formsubmit>
               </args>
             </button>
-    
+
           </children>
         </table>
       </children>
     </vertgroup>';
     }
-    
+
     public function vieweditfield($eventData)
     {
-        $field_types[InnoworkBugField::TYPE_STATUS] = $this->localeCatalog->getStr('field_status.label');
-        $field_types[InnoworkBugField::TYPE_PRIORITY] = $this->localeCatalog->getStr('field_priority.label');
-        $field_types[InnoworkBugField::TYPE_SEVERITY] = $this->localeCatalog->getStr('field_type.label');
-        $field_types[InnoworkBugField::TYPE_SOURCE] = $this->localeCatalog->getStr('field_source.label');
-        $field_types[InnoworkBugField::TYPE_RESOLUTION] = $this->localeCatalog->getStr('field_resolution.label');
-    
-        $field = new InnoworkBugField(
+        $field_types[InnoworkUserStoryField::TYPE_STATUS] = $this->localeCatalog->getStr('field_status.label');
+        $field_types[InnoworkUserStoryField::TYPE_PRIORITY] = $this->localeCatalog->getStr('field_priority.label');
+
+        $field = new InnoworkUserStoryField(
             \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getCurrentDomain()->getDataAccess(),
             '',
             $eventData['id']
            );
-    
+
         $this->xml .=
     '<vertgroup><name>editfield</name>
       <children>
-    
+
         <table><name>field</name>
           <args>
             <headers type="array">'.WuiXml::encode(
@@ -561,7 +552,7 @@ $this->toolbars['prefs'] = array(
                    ))).'</headers>
           </args>
           <children>
-    
+
         <form row="0" col="0"><name>field</name>
           <args>
             <method>post</method>
@@ -578,16 +569,16 @@ $this->toolbars['prefs'] = array(
                ))).'</action>
           </args>
           <children>
-    
+
             <grid><name>field</name>
               <children>
-    
+
                 <label row="0" col="0"><name>type</name>
                   <args>
                     <label type="encoded">'.urlencode($this->localeCatalog->getStr('fieldtype.label')).'</label>
                   </args>
                 </label>
-    
+
                 <combobox row="0" col="1"><name>fieldtype</name>
                   <args>
                     <disp>action</disp>
@@ -595,13 +586,13 @@ $this->toolbars['prefs'] = array(
                     <default>'.$field->mFieldType.'</default>
                   </args>
                 </combobox>
-    
+
                 <label row="1" col="0"><name>value</name>
                   <args>
                     <label type="encoded">'.urlencode($this->localeCatalog->getStr('fieldvalue.label')).'</label>
                   </args>
                 </label>
-    
+
                 <string row="1" col="1"><name>value</name>
                   <args>
                     <disp>action</disp>
@@ -609,13 +600,13 @@ $this->toolbars['prefs'] = array(
                     <value type="encoded">'.urlencode($field->mFieldValue).'</value>
                   </args>
                 </string>
-    
+
               </children>
             </grid>
-    
+
           </children>
         </form>
-    
+
             <button row="1" col="0"><name>apply</name>
               <args>
                 <themeimage>buttonok</themeimage>
@@ -636,13 +627,13 @@ $this->toolbars['prefs'] = array(
                 <formsubmit>field</formsubmit>
               </args>
             </button>
-    
+
           </children>
         </table>
       </children>
     </vertgroup>';
     }
-    
+
 }
 
 function fields_tab_action_builder($tab)

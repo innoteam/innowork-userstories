@@ -2,16 +2,16 @@
 <!--
   =======================================================================
 
-   Innowork-Bugs build file
+   Innowork-Userstories build file
 
    Copyright (c) 2014 Innoteam Srl. All rights reserved.
 
   =======================================================================
 -->
-<project name="Innowork Bugs" default="package">
+<project name="Innowork User Stories" default="package">
 
-	<property name="name" value="innowork-bugs" />
-	<property name="version" value="1.2.0" />
+	<property name="name" value="innowork-userstories" />
+	<property name="version" value="1.0.0" />
 
 	<target name="sources">
 		<tar destfile="${basedir}/build/${name}-src-${version}.tgz" compression="gzip">

@@ -1,11 +1,8 @@
 <?php
 
-class InnoworkBugField {
+class InnoworkUserStoryField {
 	const TYPE_STATUS = 1;
 	const TYPE_PRIORITY = 2;
-	const TYPE_SEVERITY = 3;
-	const TYPE_SOURCE = 4;
-	const TYPE_RESOLUTION = 5;
 	var $mLog;
 	var $mrDomainDA;
 	var $mFieldType;
@@ -24,7 +21,7 @@ class InnoworkBugField {
         if ($id) {
           	$query = &$this->mrDomainDA->execute(
         	    'SELECT fieldid,fieldvalue '.
-                'FROM innowork_bugs_fields_values '.
+                'FROM innowork_userstories_fields_values '.
                 'WHERE id='.$id);
 
 			if ($query->getNumberRows()) {
@@ -39,7 +36,7 @@ class InnoworkBugField {
 
 		if (empty($this->mFieldType)) {
 			$this->mLog->LogDie(
-		        'innoworkbugs.innoworkbugs.innoworkbugfield.bugfield',
+		        'innoworkuserstories.innoworkuserstories.innoworkuserstoryfield.userstoryfield',
         	    'No field type supplied'
           	);
         }
@@ -51,9 +48,9 @@ class InnoworkBugField {
 
 		if ($this->mrDomainDA and !$this->mId) {
 			$result = $this->mrDomainDA->execute(
-                'INSERT INTO innowork_bugs_fields_values '.
+                'INSERT INTO innowork_userstories_fields_values '.
                 'VALUES ('.
-				$this->mrDomainDA->getNextSequenceValue('innowork_bugs_fields_values_id_seq').','.
+				$this->mrDomainDA->getNextSequenceValue('innowork_userstories_fields_values_id_seq').','.
 				$this->mFieldType.','.
 				$this->mrDomainDA->formatText($value).')'
 			);
@@ -72,7 +69,7 @@ class InnoworkBugField {
 
 		if ($this->mrDomainDA and $this->mId) {
 			$result = $this->mrDomainDA->execute(
-                'UPDATE innowork_bugs_fields_values '.
+                'UPDATE innowork_userstories_fields_values '.
                 'SET fieldvalue='.$this->mrDomainDA->formatText($newValue).
 			(strlen($newType) ? ',fieldid='.$newType : '').
                 ' WHERE id='.$this->mId
@@ -92,7 +89,7 @@ class InnoworkBugField {
 
 		if ($this->mrDomainDA and $this->mId) {
 			$result = $this->mrDomainDA->execute(
-                'DELETE FROM innowork_bugs_fields_values '.
+                'DELETE FROM innowork_userstories_fields_values '.
                 'WHERE id='.$this->mId
 			);
 
@@ -100,22 +97,22 @@ class InnoworkBugField {
 				$update_projects = false;
 
 				switch ($this->mFieldType) {
-					case InnoworkBugField::TYPE_STATUS:
+					case InnoworkUserStoryField::TYPE_STATUS:
 						$field = 'status';
 						$update_projects = true;
 						break;
 
-					case InnoworkBugField::TYPE_PRIORITY:
+					case InnoworkUserStoryField::TYPE_PRIORITY:
 						$fields = 'priority';
 						$update_projects = true;
 						break;
 
-					case InnoworkBugField::TYPE_SEVERITY:
+					case InnoworkUserStoryField::TYPE_SEVERITY:
 						$fields = 'type';
 						$update_projects = true;
 						break;
 
-					case InnoworkBugField::TYPE_SOURCE:
+					case InnoworkUserStoryField::TYPE_SOURCE:
 					case INNOWORKPROJECTS_FIELDYTPE_CHANNEL:
 						break;
 				}
@@ -140,10 +137,10 @@ class InnoworkBugField {
 		$query = \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getCurrentDomain()->getDataAccess()->execute(
         'SELECT
         	id,fieldvalue
-        FROM 
-        	innowork_bugs_fields_values 
+        FROM
+        	innowork_userstories_fields_values
         WHERE
-        	fieldid='.$type.' 
+        	fieldid='.$type.'
         ORDER BY
         	fieldvalue');
 

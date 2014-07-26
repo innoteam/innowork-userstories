@@ -1,6 +1,6 @@
 <?php
 
-class InnoworkbugsPanelController extends \Innomatic\Desktop\Panel\PanelController
+class InnoworkuserstoriesPanelController extends \Innomatic\Desktop\Panel\PanelController
 {
     public function update($observable, $arg = '')
     {

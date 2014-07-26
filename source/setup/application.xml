@@ -2,19 +2,18 @@
 <application>
 
 	<definition>
-		<idname>innowork-bugs</idname>
+		<idname>innowork-userstories</idname>
 		<release>
-			<version>1.2.0</version>
-			<date>2014/02/02</date>
+			<version>1.0.0</version>
+			<date>2014/07/26</date>
 			<changesfile>CHANGES</changesfile>
 		</release>
-		<description>Innowork Bugs</description>
+		<description>Innowork User Stories</description>
 		<category>intranet</category>
 		<iconfile></iconfile>
 		<dependencies>
-			<dependency>innomatic[6.2]</dependency>
+			<dependency>innomatic[6.4.0]</dependency>
 			<dependency>innowork-core[3.5.0]</dependency>
-			<dependency>innowork-groupware[2.0]</dependency>
 			<dependency>innowork-projects</dependency>
 		</dependencies>
 		<options>
@@ -24,57 +23,55 @@
 			<author>
 				<name>Innoteam Srl</name>
 				<email>info@innoteam.it</email>
-				<web>http://www.innoteam.it/</web>
+				<web>http://www.innomatic.io/</web>
 			</author>
 			<copyright>Copyright (c) 2014 Innoteam Srl</copyright>
 			<license>Commercial</license>
 			<licensefile>LICENSE</licensefile>
 		</legal>
 		<support>
-			<supportemail>helpdesk@innoteam.it</supportemail>
-			<bugsemail>helpdesk@innoteam.it</bugsemail>
+			<supportemail>helpdesk@innomatic.io</supportemail>
+			<bugsemail>helpdesk@innomatic.io</bugsemail>
 			<maintainer>
 				<name>Innoteam Srl</name>
-				<email>helpdesk@innoteam.it</email>
+				<email>helpdesk@innomatic.io</email>
 			</maintainer>
 		</support>
 	</definition>
 
 	<components>
 
-		<domainpanel name="innoworkbugs"
+		<domainpanel name="innoworkuserstories"
 			category="projects" themeicon="kword" themeicontype="apps"
-			catalog="innowork-bugs::innoworkbugs_misc" />
-        <domainpanel name="innoworkbugsprefs"
+			catalog="innowork-userstories::misc" />
+        <domainpanel name="innoworkuserstoriesprefs"
             category="preferences"
             themeicon="plan" themeicontype="apps"
-            catalog="innowork-bugs::innoworkbugs_misc" />
+            catalog="innowork-userstories::misc" />
 
-		<domaintable name="innowork_bugs"
-			file="innowork_bugs.xml" />
-		<domaintable name="innowork_bugs_messages"
-			file="innowork_bugs_messages.xml" />
-        <domaintable name="innowork_bugs_fields_values"
-            file="innowork_bugs_fields_values.xml" />
+		<domaintable name="innowork_userstories"
+			file="innowork_userstories.xml" />
+        <domaintable name="innowork_userstories_fields_values"
+            file="innowork_userstories_fields_values.xml" />
 
-		<catalog name="innowork-bugs" />
+		<catalog name="innowork-userstories" />
 
-		<class name="innowork/bugs/InnoworkBug.php" />
-        <class name="innowork/bugs/InnoworkBugField.php" />
+		<class name="innowork/userstories/InnoworkUserStory.php" />
+        <class name="innowork/userstories/InnoworkUserStoryField.php" />
 
-		<innoworkitemtype name="bug" file="bug"
-			catalog="innowork-bugs::innoworkbugs_misc"
-			classfile="innowork/bugs/InnoworkBug.php" classname="InnoworkBug" icon="kword"
-			icontype="apps" domainpanel="innoworkbugs"
-			miniicon="folder_txt" summaryname="bug-name" showmode="list" />
+		<innoworkitemtype name="userstory" file="userstory"
+			catalog="innowork-userstories::misc"
+			classfile="innowork/userstories/InnoworkUserStory.php" classname="InnoworkUserStory" icon="kword"
+			icontype="apps" domainpanel="innoworkuserstories"
+			miniicon="folder_txt" summaryname="userstory-name" showmode="list" />
 
         <dashboardwidget
-            name="innoworkmybugs"
-            panel="bugs"
-            file="InnoworkMyBugsDashboardWidget.php"
-            catalog="innowork-bugs::innoworkbugs_dashboard"
-            title="mybugs"
-            class="\Shared\Dashboard\InnoworkMyBugsDashboardWidget" />
+            name="innoworkmyuserstories"
+            panel="userstories"
+            file="InnoworkMyUserstoriesDashboardWidget.php"
+            catalog="innowork-userstories::dashboard"
+            title="myuserstories"
+            class="\Shared\Dashboard\InnoworkMyUserstoriesDashboardWidget" />
 
 	</components>
 </application>
