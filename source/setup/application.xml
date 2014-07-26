@@ -1,0 +1,80 @@
+<?xml version='1.0'?>
+<application>
+
+	<definition>
+		<idname>innowork-bugs</idname>
+		<release>
+			<version>1.2.0</version>
+			<date>2014/02/02</date>
+			<changesfile>CHANGES</changesfile>
+		</release>
+		<description>Innowork Bugs</description>
+		<category>intranet</category>
+		<iconfile></iconfile>
+		<dependencies>
+			<dependency>innomatic[6.2]</dependency>
+			<dependency>innowork-core[3.5.0]</dependency>
+			<dependency>innowork-groupware[2.0]</dependency>
+			<dependency>innowork-projects</dependency>
+		</dependencies>
+		<options>
+			<!-- <option></option> -->
+		</options>
+		<legal>
+			<author>
+				<name>Innoteam Srl</name>
+				<email>info@innoteam.it</email>
+				<web>http://www.innoteam.it/</web>
+			</author>
+			<copyright>Copyright (c) 2014 Innoteam Srl</copyright>
+			<license>Commercial</license>
+			<licensefile>LICENSE</licensefile>
+		</legal>
+		<support>
+			<supportemail>helpdesk@innoteam.it</supportemail>
+			<bugsemail>helpdesk@innoteam.it</bugsemail>
+			<maintainer>
+				<name>Innoteam Srl</name>
+				<email>helpdesk@innoteam.it</email>
+			</maintainer>
+		</support>
+	</definition>
+
+	<components>
+
+		<domainpanel name="innoworkbugs"
+			category="projects" themeicon="kword" themeicontype="apps"
+			catalog="innowork-bugs::innoworkbugs_misc" />
+        <domainpanel name="innoworkbugsprefs"
+            category="preferences"
+            themeicon="plan" themeicontype="apps"
+            catalog="innowork-bugs::innoworkbugs_misc" />
+
+		<domaintable name="innowork_bugs"
+			file="innowork_bugs.xml" />
+		<domaintable name="innowork_bugs_messages"
+			file="innowork_bugs_messages.xml" />
+        <domaintable name="innowork_bugs_fields_values"
+            file="innowork_bugs_fields_values.xml" />
+
+		<catalog name="innowork-bugs" />
+
+		<class name="innowork/bugs/InnoworkBug.php" />
+        <class name="innowork/bugs/InnoworkBugField.php" />
+
+		<innoworkitemtype name="bug" file="bug"
+			catalog="innowork-bugs::innoworkbugs_misc"
+			classfile="innowork/bugs/InnoworkBug.php" classname="InnoworkBug" icon="kword"
+			icontype="apps" domainpanel="innoworkbugs"
+			miniicon="folder_txt" summaryname="bug-name" showmode="list" />
+
+        <dashboardwidget
+            name="innoworkmybugs"
+            panel="bugs"
+            file="InnoworkMyBugsDashboardWidget.php"
+            catalog="innowork-bugs::innoworkbugs_dashboard"
+            title="mybugs"
+            class="\Shared\Dashboard\InnoworkMyBugsDashboardWidget" />
+
+	</components>
+</application>
