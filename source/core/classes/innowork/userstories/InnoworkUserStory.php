@@ -38,6 +38,7 @@ class InnoworkUserStory extends InnoworkItem
         $this->mSearchResultKeys[] = 'done';
         $this->mSearchResultKeys[] = 'openedby';
         $this->mSearchResultKeys[] = 'assignedto';
+        $this->mSearchResultKeys[] = 'iterationid';
 
         $this->mViewableSearchResultKeys[] = 'id';
         $this->mViewableSearchResultKeys[] = 'title';
