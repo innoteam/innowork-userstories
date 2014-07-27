@@ -9,7 +9,7 @@ class InnoworkUserStory extends InnoworkItem
     public $mNewEvent = 'newuserstory';
     public $mNoTrash = false;
     public $mConvertible = true;
-    public $mTypeTags = array('task');
+    public $mTypeTags = array('task', 'userstory');
     public $mParentType = 'project';
     public $mParentIdField = 'projectid';
     const ITEM_TYPE = 'userstory';
@@ -28,6 +28,7 @@ class InnoworkUserStory extends InnoworkItem
         $this->mKeys['done'] = 'boolean';
         $this->mKeys['openedby'] = 'userid';
         $this->mKeys['assignedto'] = 'userid';
+        $this->mKeys['iterationid'] = 'integer';
 
         $this->mSearchResultKeys[] = 'title';
         $this->mSearchResultKeys[] = 'projectid';
@@ -77,6 +78,10 @@ class InnoworkUserStory extends InnoworkItem
                 or !strlen( $params['statusid'] )
                 ) $params['statusid'] = '0';
 
+            if (
+                !isset($params['iterationid'] )
+                or !strlen( $params['iterationid'] )
+                ) $params['iterationid'] = '0';
             if (
                 !isset($params['priorityid'] )
                 or !strlen( $params['priorityid'] )
@@ -132,6 +137,7 @@ class InnoworkUserStory extends InnoworkItem
                 case 'priorityid':
                 case 'openedby':
                 case 'assignedto':
+                case 'iterationid':
                     if ( !strlen( $key ) ) $key = 0;
                     $keys .= $key_pre.$key;
                     $values .= $value_pre.$val;
@@ -202,6 +208,7 @@ class InnoworkUserStory extends InnoworkItem
                         case 'priorityid':
                 		case 'openedby':
                 		case 'assignedto':
+                        case 'iterationid':
                         	if ( !strlen( $value ) ) $value = 0;
                             if ( !$start ) $update_str .= ',';
                             $update_str .= $field.'='.$value;

@@ -15,6 +15,7 @@
         <field  name="trashed"  type="boolean"/>
         <field  name="openedby"  type="integer"/>
         <field  name="assignedto"  type="integer"/>
+        <field name="iterationid" type="integer" />
         <key    field="id"  type="unique"/>
     </table>
 
