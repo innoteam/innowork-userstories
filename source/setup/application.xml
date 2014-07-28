@@ -1,0 +1,77 @@
+<?xml version='1.0'?>
+<application>
+
+	<definition>
+		<idname>innowork-userstories</idname>
+		<release>
+			<version>1.0.0</version>
+			<date>2014/07/28</date>
+			<changesfile>CHANGES</changesfile>
+		</release>
+		<description>Innowork User Stories</description>
+		<category>intranet</category>
+		<iconfile></iconfile>
+		<dependencies>
+			<dependency>innomatic[6.4.0]</dependency>
+			<dependency>innowork-core[3.5.0]</dependency>
+			<dependency>innowork-projects</dependency>
+		</dependencies>
+		<options>
+			<!-- <option></option> -->
+		</options>
+		<legal>
+			<author>
+				<name>Innoteam Srl</name>
+				<email>info@innoteam.it</email>
+				<web>http://www.innomatic.io/</web>
+			</author>
+			<copyright>Copyright (c) 2014 Innoteam Srl</copyright>
+			<license>Commercial</license>
+			<licensefile>LICENSE</licensefile>
+		</legal>
+		<support>
+			<supportemail>helpdesk@innomatic.io</supportemail>
+			<bugsemail>helpdesk@innomatic.io</bugsemail>
+			<maintainer>
+				<name>Innoteam Srl</name>
+				<email>helpdesk@innomatic.io</email>
+			</maintainer>
+		</support>
+	</definition>
+
+	<components>
+
+		<domainpanel name="innoworkuserstories"
+			category="projects" themeicon="kword" themeicontype="apps"
+			catalog="innowork-userstories::misc" />
+        <domainpanel name="innoworkuserstoriesprefs"
+            category="preferences"
+            themeicon="plan" themeicontype="apps"
+            catalog="innowork-userstories::misc" />
+
+		<domaintable name="innowork_userstories"
+			file="innowork_userstories.xml" />
+        <domaintable name="innowork_userstories_fields_values"
+            file="innowork_userstories_fields_values.xml" />
+
+		<catalog name="innowork-userstories" />
+
+		<class name="innowork/userstories/InnoworkUserStory.php" />
+        <class name="innowork/userstories/InnoworkUserStoryField.php" />
+
+		<innoworkitemtype name="userstory" file="userstory"
+			catalog="innowork-userstories::misc"
+			classfile="innowork/userstories/InnoworkUserStory.php" classname="InnoworkUserStory" icon="kword"
+			icontype="apps" domainpanel="innoworkuserstories"
+			miniicon="folder_txt" summaryname="userstory-name" showmode="list" />
+
+        <dashboardwidget
+            name="innoworkmyuserstories"
+            panel="userstories"
+            file="InnoworkMyUserstoriesDashboardWidget.php"
+            catalog="innowork-userstories::dashboard"
+            title="myuserstories"
+            class="\Shared\Dashboard\InnoworkMyUserstoriesDashboardWidget" />
+
+	</components>
+</application>
