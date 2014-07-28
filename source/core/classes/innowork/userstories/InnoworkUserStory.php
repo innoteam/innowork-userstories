@@ -29,6 +29,7 @@ class InnoworkUserStory extends InnoworkItem
         $this->mKeys['openedby'] = 'userid';
         $this->mKeys['assignedto'] = 'userid';
         $this->mKeys['iterationid'] = 'integer';
+        $this->mKeys['storypoints'] = 'decimal';
 
         $this->mSearchResultKeys[] = 'title';
         $this->mSearchResultKeys[] = 'projectid';
@@ -39,12 +40,14 @@ class InnoworkUserStory extends InnoworkItem
         $this->mSearchResultKeys[] = 'openedby';
         $this->mSearchResultKeys[] = 'assignedto';
         $this->mSearchResultKeys[] = 'iterationid';
+        $this->mSearchResultKeys[] = 'storypoints';
 
         $this->mViewableSearchResultKeys[] = 'id';
         $this->mViewableSearchResultKeys[] = 'title';
         $this->mViewableSearchResultKeys[] = 'projectid';
         $this->mViewableSearchResultKeys[] = 'statusid';
         $this->mViewableSearchResultKeys[] = 'priorityid';
+        $this->mViewableSearchResultKeys[] = 'storypoints';
         $this->mViewableSearchResultKeys[] = 'creationdate';
         $this->mViewableSearchResultKeys[] = 'openedby';
         $this->mViewableSearchResultKeys[] = 'assignedto';
@@ -121,6 +124,7 @@ class InnoworkUserStory extends InnoworkItem
                 case 'accepcriteria':
                 case 'done':
                 case 'trashed':
+                case 'storypoints':
                     $keys .= $key_pre.$key;
                     $values .= $value_pre.$this->mrDomainDA->formatText( $val );
                     break;
@@ -190,6 +194,7 @@ class InnoworkUserStory extends InnoworkItem
                         case 'accepcriteria':
                         case 'done':
                         case 'trashed':
+                        case 'storypoints':
                             if ( !$start ) $update_str .= ',';
                             $update_str .= $field.'='.$this->mrDomainDA->formatText( $value );
                             $start = 0;

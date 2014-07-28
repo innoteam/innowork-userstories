@@ -16,6 +16,7 @@
         <field  name="openedby"  type="integer"/>
         <field  name="assignedto"  type="integer"/>
         <field name="iterationid" type="integer" />
+        <field name="storypoints" type="decimal" length="6,2" default="0" />
         <key    field="id"  type="unique"/>
     </table>
 
