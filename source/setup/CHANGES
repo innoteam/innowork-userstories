@@ -1,3 +1,13 @@
+1.1.0 - 2014/09/02
+------------------
+NEW FEATURES:
+- Added support for Story Points. (Alex Pagnoni)
+
+FIXES:
+- Added missing dashboard locale strings. (Alex Pagnoni)
+
+
+
 1.0.0 - 2014/07/28
 ------------------
 - First release.

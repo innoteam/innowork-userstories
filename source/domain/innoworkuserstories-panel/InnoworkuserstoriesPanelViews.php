@@ -337,15 +337,18 @@ $this->toolbars['mail'] = array(
                 $userstories->mSearchOrderBy = 'title'.($sort_order == 'up' ? ' DESC' : '');
                 break;
             case '4':
-                $userstories->mSearchOrderBy = 'openedby'.($sort_order == 'up' ? ' DESC' : '');
+                $userstories->mSearchOrderBy = 'storypoints'.($sort_order == 'up' ? ' DESC' : '');
                 break;
             case '5':
-                $userstories->mSearchOrderBy = 'assignedto'.($sort_order == 'up' ? ' DESC' : '');
+                $userstories->mSearchOrderBy = 'openedby'.($sort_order == 'up' ? ' DESC' : '');
                 break;
             case '6':
-                $userstories->mSearchOrderBy = 'priorityid'.($sort_order == 'up' ? ' DESC' : '');
+                $userstories->mSearchOrderBy = 'assignedto'.($sort_order == 'up' ? ' DESC' : '');
                 break;
             case '7':
+                $userstories->mSearchOrderBy = 'priorityid'.($sort_order == 'up' ? ' DESC' : '');
+                break;
+            case '8':
                 $userstories->mSearchOrderBy = 'statusid'.($sort_order == 'up' ? ' DESC' : '');
                 break;
         }
@@ -400,25 +403,32 @@ $this->toolbars['mail'] = array(
                         'default',
                         array('sortby' => '3')
                 )));
-        $headers[3]['label'] = $this->localeCatalog->getStr('openedby.header');
-        $headers[3]['link'] = \Innomatic\Wui\Dispatch\WuiEventsCall::buildEventsCallString('', array(array('view', 'default', array('sortby' => '4'))));
-
-        $headers[4]['label'] = $this->localeCatalog->getStr('assignedto.header');
-        $headers[4]['link'] = \Innomatic\Wui\Dispatch\WuiEventsCall::buildEventsCallString('', array(array('view', 'default', array('sortby' => '5'))));
-
-        $headers[5]['label'] = $this->localeCatalog->getStr('priority.header');
-        $headers[5]['link'] = \Innomatic\Wui\Dispatch\WuiEventsCall::buildEventsCallString('',
-                array(array(
-                        'view',
-                        'default',
-                        array('sortby' => '7')
-                )));
-        $headers[6]['label'] = $this->localeCatalog->getStr('status.header');
-        $headers[6]['link'] = \Innomatic\Wui\Dispatch\WuiEventsCall::buildEventsCallString('',
+        $headers[3]['label'] = $this->localeCatalog->getStr('storypoints.header');
+        $headers[3]['link'] = \Innomatic\Wui\Dispatch\WuiEventsCall::buildEventsCallString('',
                 array(array(
                         'view',
                         'default',
                         array('sortby' => '8')
+                )));
+        $headers[4]['label'] = $this->localeCatalog->getStr('openedby.header');
+        $headers[4]['link'] = \Innomatic\Wui\Dispatch\WuiEventsCall::buildEventsCallString('', array(array('view', 'default', array('sortby' => '4'))));
+
+        $headers[5]['label'] = $this->localeCatalog->getStr('assignedto.header');
+        $headers[5]['link'] = \Innomatic\Wui\Dispatch\WuiEventsCall::buildEventsCallString('', array(array('view', 'default', array('sortby' => '5'))));
+
+        $headers[6]['label'] = $this->localeCatalog->getStr('priority.header');
+        $headers[6]['link'] = \Innomatic\Wui\Dispatch\WuiEventsCall::buildEventsCallString('',
+                array(array(
+                        'view',
+                        'default',
+                        array('sortby' => '6')
+                )));
+        $headers[7]['label'] = $this->localeCatalog->getStr('status.header');
+        $headers[7]['link'] = \Innomatic\Wui\Dispatch\WuiEventsCall::buildEventsCallString('',
+                array(array(
+                        'view',
+                        'default',
+                        array('sortby' => '7')
                 )));
 
         $this->xml =
@@ -729,29 +739,35 @@ $this->toolbars['mail'] = array(
 </label>
 <label row="'.$row.'" col="3">
   <args>
-    <label>'.WuiXml::cdata($users[$userstory['openedby']]).'</label>
+    <label>'.WuiXml::cdata($userstory['storypoints']).'</label>
     <nowrap>false</nowrap>
   </args>
 </label>
 <label row="'.$row.'" col="4">
   <args>
-    <label>'.WuiXml::cdata($users[$userstory['assignedto']]).'</label>
+    <label>'.WuiXml::cdata($users[$userstory['openedby']]).'</label>
     <nowrap>false</nowrap>
   </args>
 </label>
 <label row="'.$row.'" col="5">
   <args>
-    <label>'.WuiXml::cdata($priorities[$userstory['priorityid']]).'</label>
+    <label>'.WuiXml::cdata($users[$userstory['assignedto']]).'</label>
     <nowrap>false</nowrap>
   </args>
 </label>
 <label row="'.$row.'" col="6">
   <args>
+    <label>'.WuiXml::cdata($priorities[$userstory['priorityid']]).'</label>
+    <nowrap>false</nowrap>
+  </args>
+</label>
+<label row="'.$row.'" col="7">
+  <args>
     <label>'.WuiXml::cdata($statuses[$userstory['statusid']]).'</label>
     <nowrap>false</nowrap>
   </args>
 </label>
-<innomatictoolbar row="'.$row.'" col="7"><name>tools</name>
+<innomatictoolbar row="'.$row.'" col="8"><name>tools</name>
   <args>
     <frame>false</frame>
     <toolbars type="array">'.WuiXml::encode(array(
@@ -1118,6 +1134,20 @@ $this->toolbars['mail'] = array(
 
                 <grid>
                   <children>
+
+                    <label row="0" col="0" halign="right">
+                      <args>
+                        <label>'.$this->localeCatalog->getStr('storypoints.label').'</label>
+                      </args>
+                    </label>
+
+                    <string row="0" col="1"><name>storypoints</name>
+                      <args>
+                        <disp>action</disp>
+                        <size>6</size>
+                        <value>'.WuiXml::cdata($userstory_data['storypoints']).'</value>
+                      </args>
+                    </string>
 
                     <label row="0" col="2" halign="right">
                       <args>
