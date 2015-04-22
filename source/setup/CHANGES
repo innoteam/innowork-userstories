@@ -1,3 +1,8 @@
+x.x.x
+------------------
+FIXES:
+- Fixed the loss of parameters in the search of the user stories. (Amanda Accalai)
+
 1.1.0 - 2014/09/02
 ------------------
 NEW FEATURES:
